@@ -1,0 +1,84 @@
+# =========================================================
+# Unity Git Attributes with Git LFS
+# =========================================================
+
+# -----------------------
+# Unity text-based assets
+# -----------------------
+*.cs            text diff=csharp
+*.shader        text
+*.cginc         text
+*.compute       text
+*.hlsl          text
+*.glsl          text
+*.json          text
+*.xml           text
+*.yaml          text
+*.yml           text
+
+# Unity YAML mergeable assets
+*.unity         text merge=unityyamlmerge eol=lf
+*.prefab        text merge=unityyamlmerge eol=lf
+*.anim          text merge=unityyamlmerge eol=lf
+*.controller    text merge=unityyamlmerge eol=lf
+*.mat           text merge=unityyamlmerge eol=lf
+*.physicMaterial text merge=unityyamlmerge eol=lf
+*.meta          text merge=unityyamlmerge eol=lf
+ProjectSettings/* text merge=unityyamlmerge eol=lf
+Packages/*      text eol=lf
+
+# -----------------------
+# Git LFS for 3D models
+# -----------------------
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.dae filter=lfs diff=lfs merge=lfs -text
+*.3ds filter=lfs diff=lfs merge=lfs -text
+*.dxf filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.max filter=lfs diff=lfs merge=lfs -text
+*.mb  filter=lfs diff=lfs merge=lfs -text
+*.ma  filter=lfs diff=lfs merge=lfs -text
+
+# -----------------------
+# Binary libraries
+# -----------------------
+*.dll           binary
+*.exe           binary
+*.pdb           binary
+*.mdb           binary
+*.unitypackage  binary
+*.a             binary
+*.lib           binary
+*.so            binary
+*.dylib         binary
+
+# -----------------------
+# Binary media (no diffs)
+# -----------------------
+# Images
+*.jpg           binary
+*.jpeg          binary
+*.png           binary
+*.tga           binary
+*.tif           binary
+*.tiff          binary
+*.psd           binary
+*.gif           binary
+*.bmp           binary
+*.ico           binary
+
+# Audio
+*.mp3           binary
+*.ogg           binary
+*.wav           binary
+*.aiff          binary
+*.flac          binary
+
+# Video
+*.mp4           binary
+*.mov           binary
+*.avi           binary
+*.wmv           binary
+*.mpg           binary
+*.mpeg          binary
