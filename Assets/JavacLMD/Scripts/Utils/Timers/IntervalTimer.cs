@@ -3,39 +3,54 @@ using UnityEngine;
 
 namespace JavacLMD.Utils.Timers
 {
-    public class IntervalTimer : Timer
+
+    #region Interval Timer
+
+    [Serializable]
+    public class IntervalTimer : BaseTimer
     {
-        [field: SerializeField]
-        public float Interval { get; private set; }
+        [SerializeField] private float _interval = 1f;
+        private float _intervalElapsed;
 
-        public Action OnIntervalElapsed;
-
-        private float _nextTriggerTime;
-
-        public IntervalTimer(float interval)
+        public float Interval
         {
-            Interval = Mathf.Max(0.01f, interval); // prevent 0 interval
+            get => _interval;
+            set => _interval = Mathf.Max(0.001f, value);
         }
 
-        protected override void TickInternal(float deltaTime)
+        public IntervalTimer(float interval, float? duration = null)
         {
-            if (ElapsedTime >= _nextTriggerTime)
+            _interval = interval;
+            _duration = duration;
+        }
+
+        public override void Tick(float deltaTime)
+        {
+            if (!_isRunning || _isFinished) return;
+
+            _elapsedTimeInSeconds += deltaTime;
+            _intervalElapsed += deltaTime;
+
+            while (_intervalElapsed >= _interval)
             {
-                _nextTriggerTime += Interval;
-                OnIntervalElapsed?.Invoke();
+                _intervalElapsed -= _interval;
+                OnTick.Invoke(_elapsedTimeInSeconds, _duration);
+            }
+
+            if (_duration.HasValue && _elapsedTimeInSeconds >= _duration.Value)
+            {
+                _isFinished = true;
+                Stop();
+                OnComplete.Invoke();
             }
         }
 
-        public void Restart(float? newInterval = null)
+        public override void Reset()
         {
-            if (newInterval.HasValue)
-                Interval = Mathf.Max(0.01f, newInterval.Value);
-
-            _nextTriggerTime = 0f;
-            Reset();
-            Start();
+            _intervalElapsed = 0f;
+            base.Reset();
         }
-
-        public override string ToString() => $"IntervalTimer(every {Interval:0.00}s)";
     }
+
+    #endregion
 }

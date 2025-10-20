@@ -1,43 +1,41 @@
 ﻿using System;
-using UnityEngine;
 
 namespace JavacLMD.Utils.Timers
 {
-    public class CountdownTimer : Timer
+
+    #region Countdown Timer
+
+    [Serializable]
+    public class CountdownTimer : ITimer
     {
-        public float Duration { get; private set; }
-        public Action<float, float> OnCountdownTick;
-        public Action OnComplete;
-
-        private bool _hasCompleted;
-
-        public CountdownTimer(float duration) : base()
+        public CountdownTimer(float? duration)
         {
-            Duration = duration;
+            _duration = duration;
+            _elapsedTimeInSeconds = duration ?? 0f;
         }
-        
-        
-        protected override void TickInternal(float deltaTime)
-        {
-            float remaining = Duration - ElapsedTime;
-            OnCountdownTick?.Invoke(Mathf.Max(remaining, 0f), Duration);
 
-            if (!_hasCompleted && ElapsedTime >= Duration)
+        public override void Tick(float deltaTime)
+        {
+            if (!_isRunning || _isFinished) return;
+
+            _elapsedTimeInSeconds -= deltaTime;
+            OnTick.Invoke(_elapsedTimeInSeconds, _duration);
+
+            if (_duration.HasValue && _elapsedTimeInSeconds <= 0f)
             {
-                _hasCompleted = true;
-                OnComplete?.Invoke();
+                _elapsedTimeInSeconds = 0f;
+                _isFinished = true;
                 Stop();
+                OnComplete.Invoke();
             }
         }
 
-        public void Restart(float? newDuration = null)
+        public override void Reset()
         {
-            if (newDuration.HasValue)
-                Duration = newDuration.Value;
-            _hasCompleted = false;
-            Reset();
-            Start();
+            _elapsedTimeInSeconds = _duration ?? 0f;
+            base.Reset();
         }
-
     }
+
+    #endregion
 }

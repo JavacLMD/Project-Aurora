@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using JavacLMD.Utils.Timers;
 using UnityEngine.UI;
 
 namespace JavacLMD.Utils.Timers._DEMO
@@ -27,7 +26,7 @@ namespace JavacLMD.Utils.Timers._DEMO
 
         private void Start()
         {
-            TimerManager.Instance.OnStartup();
+            TimerManager.Instance.OnSystemRegister();
 
             SetupCountdownTimer();
             SetupIntervalTimer();
@@ -37,7 +36,7 @@ namespace JavacLMD.Utils.Timers._DEMO
 
         private void Update()
         {
-            TimerManager.Instance.OnUpdate(Time.deltaTime);
+            TimerManager.Instance.OnSystemUpdate(Time.deltaTime);
         }
 
         #region Timer Setup Methods
